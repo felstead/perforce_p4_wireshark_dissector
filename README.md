@@ -18,7 +18,7 @@ This is particularly useful if you are writing a Perforce plugin using the P4 C/
 
 1. Clone this repository:
     ```bash
-    git clone https://github.com/yourusername/perforce_p4_wireshark_dissector.git
+    git clone https://github.com/felstead/perforce_p4_wireshark_dissector.git
     ```
 2. Copy the dissector script `p4.lua` to your Wireshark plugins directory:
     - On Linux: `~/.local/lib/wireshark/plugins/`
