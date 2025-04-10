@@ -128,6 +128,8 @@ function p4_protocol.dissector(buffer, pinfo, tree)
   return buffer_index
 end
 
+local dissector_table_ssl = DissectorTable.get("ssl.port")
+dissector_table_ssl:add(1666, p4_protocol)
 local tcp_port = DissectorTable.get("tcp.port")
 tcp_port:add(1666, p4_protocol)
 
