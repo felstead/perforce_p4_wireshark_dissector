@@ -21,6 +21,8 @@ function p4_protocol.dissector(buffer, pinfo, tree)
 
   local p4_tree = tree:add(p4_protocol, buffer(), "Perforce Protocol")
 
+  local rpc_names = ""
+
   while buffer_index < length do
     local packet_length_checksum_val = buffer(buffer_index, 1):uint()
     local packet_length_val = buffer(buffer_index + 1, 4):le_uint()
@@ -121,10 +123,22 @@ function p4_protocol.dissector(buffer, pinfo, tree)
 
       if key == "func" or key == "Func" then
         rpc_packet_tree:append_text(" (function: " .. value_buf:string() .. ")")
+        
+          -- Add it to our list of RPC names
+        if rpc_names:len() > 0 then
+          rpc_names = rpc_names .. ", " .. value_buf:string()
+        else
+          rpc_names = " (RPCs: " .. value_buf:string()
+        end
+
       end
     end
   end
 
+  if rpc_names:len() > 0 then
+    rpc_names = rpc_names .. ")"
+  end
+  pinfo.cols.info = "P4: " .. tostring(pinfo.src_port) .. " → " .. tostring(pinfo.dst_port) .. rpc_names
   return buffer_index
 end
 
